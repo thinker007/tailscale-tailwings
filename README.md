@@ -1,5 +1,5 @@
-fly-tailscale-exit
-------------------
+# Tailwings
+
 
 ![Action Status: auto update tailscale version](https://github.com/patte/fly-tailscale-exit/actions/workflows/auto-update-tailscale.yml/badge.svg)
 
@@ -27,13 +27,16 @@ https://user-images.githubusercontent.com/3500621/129452512-616e7642-5a03-4037-9
 
 ## Setup
 
+
 #### 1. Have GitHub account
 Create an account on github if you don't have one already: https://github.com/signup
+
 
 #### 2. Have GitHub organization
 Let's create a new github org for your network: https://github.com/organizations/plan
 - Choose a name for your network: eg. `banana-bender-net`
 - Plan: free
+
 
 #### 3. Have tailscale
 Install tailscale on your machine(s):
@@ -41,8 +44,11 @@ Install tailscale on your machine(s):
 - Login with github, choose the github organization created before (eg. `banana-bender-net`).
 - Check your network and keep this window around: https://login.tailscale.com/admin/machines
 
+
 #### 4. Setup DNS in tailscale
-In order to use tailscale for exit traffic you need to configure a public DNS. Go to https://login.tailscale.com/admin/dns and add the nameservers of your choice (eg. cloudflare: `1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001`)
+In order to use tailscale for exit traffic you need to configure a public DNS. Go to https://login.tailscale.com/admin/dns and add the nameservers of your choice
+(eg. cloudflare: `1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001`)
+
 
 #### 5. Create tailscale auth key
 Create an reusable auth key in tailscale: https://login.tailscale.com/admin/settings/authkeys
@@ -53,85 +59,109 @@ _A ephemeral key would be better for our use case, but it's restricted to IPv6 o
 #### 6. Have fly.io account and cli
 Install the fly-cli to your machine and login with github: https://fly.io/docs/hands-on/installing/
 
+```sh
+$ curl -L https://fly.io/install.sh | sh
+```
+
+
 #### 7. Have fly.io organization
 - Create an org on fly (technically there is no requirement to name it the same).
-`flyctl orgs create banana-bender-net`
-- Go and enter your credit card at [https://fly.io/organizations/banana-bender-net](https://fly.io/organizations). It's only going to be charged if you use more than the [free resources](https://fly.io/docs/about/pricing/).
+
+```sh
+$ flyctl orgs create banana-bender-net
+```
+
+- Go and enter your credit card at [https://fly.io/organizations/banana-bender-net](https://fly.io/organizations).
+It's only going to be charged if you use more than the [free resources](https://fly.io/docs/about/pricing/).
+
 
 #### 8. Setup fly
 Give the app the name you wan't. Don't deploy yet.
-```
-git clone https://github.com/patte/fly-tailscale-exit.git
-
-cd fly-tailscale-exit
-
-flyctl launch
-
+```sh
+$ git clone https://github.com/patte/fly-tailscale-exit.git
+$ cd fly-tailscale-exit
+$ flyctl launch
 ? fly.toml file already exits would you like copy its configuration : (yes/no) yes
-
 ? App Name (leave blank to use an auto-generated name) tailwings
-
 ? Select organization: banana-bender-net-test (banana-bender-net-test)
-
 ? would you like to deploy postgressql for the app: (yes/no) no
-
 ? would you like to deploy now : (yes/no) no
 ```
 
 #### 9. Set the tailscale auth key in fly
-```
-flyctl secrets set TAILSCALE_AUTH_KEY=[see step 4]
+```sh
+$ flyctl secrets set TAILSCALE_AUTH_KEY=[see step 4]
 Secrets are staged for the first deployment
 ```
 
-#### 10. Allocate IP
-```
-flyctl ips allocate-v6 
+
+#### 10. Set autoapprovers for Exitnode (optional)
+Modify the Tailscale Access Control (ACL) to include the following to auto approve the exitnode
+```json
+"autoApprovers": {
+  "exitNode": ["tag:router"],
+}
 ```
 
-#### 11. Deploy
-```
-flyctl deploy
+
+#### 11. Allocate IP
+```sh
+$ flyctl ips allocate-v6 
 ```
 
-#### 12. Enable exit node in tailscale
+
+#### 12. Deploy
+```sh
+$ flyctl deploy
+```
+
+
+#### 13. Enable exit node in tailscale
+This step is only needed if you did not set the auto approval in the ACL
 Wait for the node to appear in the tailscale machine overview.
 Enable exit routing for the nodes https://login.tailscale.com/admin/machines (see [tailscale docs](https://tailscale.com/kb/1103/exit-nodes/#step-2-allow-the-exit-node-from-the-admin-panel) on how to do it)
 
 
-#### 13. Connect with your local machine or smartphone
+#### 14. Connect with your local machine or smartphone
 On iOS, choose "use exit node" and there you go.
 
 On linux, just run
-```
-tailscale up --use-exit-node=fly-fra
+```sh
+$ tailscale up --use-exit-node=fly-fra
 ```
 
-#### 14. Regions
+
+#### 15. Regions
 To add or remove regions just type:
+```sh
+$ flyctl regions add hkg
+$ flyctl scale count 2
 ```
-flyctl regions add hkg
-flyctl scale count 2
-```
+
 Wait for the node to appear in tailscale, confirm it to be a legit exit node (step 11), choose it in your client and in less than 5 minutes to access the internet in another place.
+
 Note: Scaling up also reinitializes the existing nodes. Just use the newly created one and delete the old.
 Note: It seems not all fly regions have their own exit routers and some use another for egress traffic. This needs further investigation.
 
 https://user-images.githubusercontent.com/3500621/129452587-7ff90cd2-5e6d-4e39-9a91-548c498636f5.mp4
 
-#### 15. halt
+
+#### 16. halt
 In case you want to stop:
-```
-sudo systemctl stop tailscaled
-flyctl suspend
+
+```sh
+$ sudo systemctl stop tailscaled
+$ flyctl suspend
 ```
 
-#### 16. remove
+
+#### 17. remove
 In case you want to tear it down:
+```sh
+$ flyctl orgs delete banana-bender-net
 ```
-flyctl orgs delete banana-bender-net
-```
-I think there is no way to delete a tailscale org.
+
+The tailnet can be deleted from https://login.tailscale.com/admin/settings/general
 
 
 ## Invite your friends
@@ -139,18 +169,19 @@ All you need to do to invite friends into your network is to invite them to the 
 
 
 ## Why this probably is a bad idea
-- Dirty egress traffic for fly.io.<br>
+- Dirty egress traffic for fly.io.  
 Usually traffic exiting fly machines is upstream API traffic not dirty users surfing the web. If too many people do this and use it for scraping or worse fly's traffic reputation might suffer.
 
-- Increased traffic on tailscale derp servers.<br>
+- Increased traffic on tailscale derp servers.  
   Usually tailscale is used for internal networks. If everybody uses this as their everyday VPN the traffic the derp servers might increase beyond what's forseen.
 
-- Tailscale teams is supposed to cost money.<br>
+- Tailscale teams is supposed to cost money.  
   ~~Tailscale lists teams to [cost $5 per user per month](https://tailscale.com/pricing/) but creating and using a github org in the way described above doesn't count as team but as personal account. I didn't find a way to upgrade an org created this way into a paying org. Please let me pay ;)~~ It seems you can pay at tailscale for a github team now, so go there and do that if you use this together with others: https://login.tailscale.com/admin/settings/billing/plans This makes this VPN approach being fully paid.
 > You’ll never be stopped from spinning up more devices or subnet routers, or trying out ACL rules. We encourage you to play around, find what works best for you, and update your payment settings after-the-fact.
 
 [source](https://tailscale.com/blog/2021-06-new-pricing/)
 Kudos to tailscale for using soft-limit, IMHO this makes for a great user experience and I'd expect it to simplify some code parts as well.
+
 
 ## Love Letter
 Just enjoy the magnificence, the crazyness of the house of cards that the modern cloud is. I seriously enjoyed setting this up with fly and tailscale. I think both are mind blowingly awesome.
@@ -164,4 +195,3 @@ What gets me most about fly is the approach to turn Dockerfiles into microVMs. I
 ![Screenshot from 2021-08-14 19-17-34](https://user-images.githubusercontent.com/3500621/129463128-0572ced3-13b7-4908-8477-6bb04049a658.png)
 
 This plus anycast, interapp vpn, persistent storage, locations all over the world, an open-source [client](https://github.com/superfly/flyctl) and being a chatty crew with the mindset ["Go Nuts"](https://fly.io/blog/ssh-and-user-mode-ip-wireguard/) have me left in awe.
-
