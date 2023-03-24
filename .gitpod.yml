@@ -1,0 +1,3 @@
+tasks:
+  - init: curl -L https://fly.io/install.sh | sh
+    command: /home/gitpod/.fly/bin/flyctl auth login

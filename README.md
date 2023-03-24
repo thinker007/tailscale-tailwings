@@ -84,17 +84,22 @@ flyctl secrets set TAILSCALE_AUTH_KEY=[see step 4]
 Secrets are staged for the first deployment
 ```
 
-#### 10. Deploy
+#### 10. Allocate IP
 ```
-flyctl  deploy
+flyctl ips allocate-v6 
 ```
 
-#### 11. Enable exit node in tailscale
+#### 11. Deploy
+```
+flyctl deploy
+```
+
+#### 12. Enable exit node in tailscale
 Wait for the node to appear in the tailscale machine overview.
 Enable exit routing for the nodes https://login.tailscale.com/admin/machines (see [tailscale docs](https://tailscale.com/kb/1103/exit-nodes/#step-2-allow-the-exit-node-from-the-admin-panel) on how to do it)
 
 
-#### 12. Connect with your local machine or smartphone
+#### 13. Connect with your local machine or smartphone
 On iOS, choose "use exit node" and there you go.
 
 On linux, just run
@@ -102,7 +107,7 @@ On linux, just run
 tailscale up --use-exit-node=fly-fra
 ```
 
-#### 13. Regions
+#### 14. Regions
 To add or remove regions just type:
 ```
 flyctl regions add hkg
@@ -114,19 +119,20 @@ Note: It seems not all fly regions have their own exit routers and some use anot
 
 https://user-images.githubusercontent.com/3500621/129452587-7ff90cd2-5e6d-4e39-9a91-548c498636f5.mp4
 
-#### 14. halt
+#### 15. halt
 In case you want to stop:
 ```
 sudo systemctl stop tailscaled
 flyctl suspend
 ```
 
-#### 15. remove
+#### 16. remove
 In case you want to tear it down:
 ```
 flyctl orgs delete banana-bender-net
 ```
 I think there is no way to delete a tailscale org.
+
 
 ## Invite your friends
 All you need to do to invite friends into your network is to invite them to the github organization, have them install tailscale and login with github. They immediately see the available exit nodes and can use whichever they please. Easiest VPN setup ever!!
