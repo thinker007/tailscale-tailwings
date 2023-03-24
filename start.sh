@@ -23,7 +23,7 @@ fi
 
 until /app/tailscale up \
     --authkey=${TAILSCALE_AUTH_KEY} \
-    --hostname=xtend-fly-${FLY_REGION} \
+    --hostname=xtend-${FLY_REGION} \
     --advertise-exit-node \
     --ssh
 do
