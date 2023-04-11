@@ -31,4 +31,11 @@ do
 done
 
 echo 'Tailscale started'
+
+echo 'Starting Dante...'
+
+sockd &
+
+echo 'Dante started'
+
 sleep infinity
