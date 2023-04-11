@@ -23,7 +23,7 @@ fi
 
 until /app/tailscale up \
     --authkey=${TAILSCALE_AUTH_KEY} \
-    --hostname=xtend-${FLY_REGION} \
+    --hostname=ntrance-${FLY_REGION} \
     --advertise-exit-node \
     --ssh
 do
@@ -31,6 +31,12 @@ do
 done
 
 echo 'Tailscale started'
+
+echo 'Starting Squid...'
+
+squid &
+
+echo 'Squid started'
 
 echo 'Starting Dante...'
 

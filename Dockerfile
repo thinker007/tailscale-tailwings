@@ -11,16 +11,15 @@ COPY . ./
 
 
 FROM alpine:latest
-RUN apk update && apk add ca-certificates iptables ip6tables iproute2 dante-server && rm -rf /var/cache/apk/*
+RUN apk update && apk add ca-certificates iptables ip6tables iproute2 squid dante-server && rm -rf /var/cache/apk/*
+RUN mkdir -p /var/run/tailscale /var/cache/tailscale /var/lib/tailscale /etc/squid/
 
 # Copy binary to production image
 COPY --from=build /app/start.sh /app/start.sh
 COPY --from=build /app/tailscaled /app/tailscaled
 COPY --from=build /app/tailscale /app/tailscale
 COPY --from=build /app/sockd.conf /etc/sockd.conf
-RUN mkdir -p /var/run/tailscale
-RUN mkdir -p /var/cache/tailscale
-RUN mkdir -p /var/lib/tailscale
+COPY --from=build /app/squid.conf /etc/squid/squid.conf
 
 # Run on container startup.
 USER root
