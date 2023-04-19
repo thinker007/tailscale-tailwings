@@ -18,6 +18,7 @@ RUN mkdir -p /var/run/tailscale /var/cache/tailscale /var/lib/tailscale /etc/squ
 COPY --from=build /app/start.sh /app/start.sh
 COPY --from=build /app/tailscaled /app/tailscaled
 COPY --from=build /app/tailscale /app/tailscale
+COPY --from=build /app/motd /etc/motd
 COPY --from=build /app/sockd.conf /etc/sockd.conf
 COPY --from=build /app/squid.conf /etc/squid/squid.conf
 
