@@ -19,3 +19,18 @@ To use the proxies, you can use the `tailscale ip` that has been given to the no
 
 You can also use `ssh` to connect to the node with the `-D` option or `sshuttle`.
 
+
+Deploy
+------
+
+Use the provide [Gitpod workspace](https://gitpod.io/#https://github.com/spotsnel/tailscale-tailwings)
+to help with the deployment to Fly.io, following the original documentation and the provided
+`fly.toml`.
+
+Otherwise, you can use `podman` or `docker` to deploy the `Containerfile` that is
+included, or use:
+
+```
+$ podman run -D --env=TAILSCALE_AUTH_KEY=tskey-... ghcr.io/spotsnel/tailscale-tailwings:latest
+```
+
