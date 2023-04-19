@@ -3,6 +3,9 @@ app = "tailwings"
 kill_signal = "SIGINT"
 kill_timeout = 5
 
+[build]
+  image = "ghcr.io/spotsnel/tailscale-tailwings:latest"
+
 [env]
   PORT="41641"
 # create a reusable or ephemeral auth key
