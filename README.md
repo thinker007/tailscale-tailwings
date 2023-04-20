@@ -30,7 +30,13 @@ to help with the deployment to Fly.io, following the original documentation and 
 Otherwise, you can use `podman` or `docker` to deploy the `Containerfile` that is
 included, or use:
 
-```
-$ podman run -D --env=TAILSCALE_AUTH_KEY=tskey-... ghcr.io/spotsnel/tailscale-tailwings:latest
+```sh
+$ podman run -d \
+   --name=tailwings \
+   --env=TAILSCALE_AUTH_KEY=tskey-... \
+   --cap-add=NET_ADMIN \
+   --cap-add=NET_RAW \
+   --device=/dev/net/tun \ 
+  ghcr.io/spotsnel/tailscale-tailwings:latest
 ```
 
