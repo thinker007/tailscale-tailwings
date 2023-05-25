@@ -18,12 +18,15 @@ To use the proxies, you can use the `tailscale ip` that has been given to the no
   * port `3215` is the Dante SOCKS5 proxy
 
 You can also use `ssh` to connect to the node with the `-D` option or `sshuttle`.
+Authentication is handled by Tailscale SSH, and currently expects `root` as user.
+
+On port `53` it runs dnsmasq as a forwarder.
 
 
 Deploy
 ------
 
-Use the provide [Gitpod workspace](https://gitpod.io/#https://github.com/spotsnel/tailscale-tailwings)
+Use the [Gitpod workspace](https://gitpod.io/#https://github.com/spotsnel/tailscale-tailwings)
 to help with the deployment to Fly.io, following the original documentation and the provided
 `fly.toml`.
 

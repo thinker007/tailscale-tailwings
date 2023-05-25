@@ -44,4 +44,10 @@ sockd &
 
 echo 'Dante started'
 
+echo 'Starting dnsmasq...'
+
+dnsmasq &
+
+echo 'dnsmasq started'
+
 sleep infinity
