@@ -1,10 +1,11 @@
-app = "tailwings"
+app = "flyscale"
 
+primary_region = "nrt"
 kill_signal = "SIGINT"
-kill_timeout = 5
+kill_timeout = "5s"
 
 [build]
-  image = "ghcr.io/spotsnel/tailscale-tailwings:latest"
+  image = "ghcr.io/spotsnel/flyscale:latest"
 
 [env]
   PORT="41641"
@@ -19,6 +20,12 @@ kill_timeout = 5
 [[services]]
   internal_port = 41641
   protocol = "udp"
+  processes = ["app"]
 
   [[services.ports]]
-    port = "41641"
+    port = 41641
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 100
+    soft_limit = 75
