@@ -17,5 +17,6 @@ services:
       - /dev/net/tun
     volumes:
       - /var/lib/tailscale/tailscaled.state:/var/lib/tailscale/tailscaled.state
+      - ./etc/sysctl.conf:/etc/sysctl.conf
     restart: unless-stopped
     
