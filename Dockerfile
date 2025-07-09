@@ -29,6 +29,7 @@ RUN mkdir -p \
       /etc/squid/
 
 # Copy binary to production image
+COPY --from=build /app/default/tailscaled /etc/default/tailscaled
 COPY --from=build /app/start.sh /app/start.sh
 COPY --from=build /app/tailscaled /app/tailscaled
 COPY --from=build /app/tailscale /app/tailscale
