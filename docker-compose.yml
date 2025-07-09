@@ -1,0 +1,15 @@
+services:
+  tailwings:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: thinker007/tailwings:latest
+    container_name: tailwings
+    env_file:
+      - .env
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    devices:
+      - /dev/net/tun
+    restart: unless-stopped
