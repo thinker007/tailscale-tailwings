@@ -40,7 +40,7 @@ RUN mkdir -p \
 COPY --from=build /app/default/tailscaled /etc/default/tailscaled
 COPY --from=build /app/start.sh /app/start.sh
 COPY --from=build /app/headscale /app/headscale
-COPY --from=build /app/etc/headscale/config.yml.template /etc/headscale/config.yaml.template
+COPY --from=build /app/etc/headscale/config.yml.template /etc/headscale/config.yml.template
 COPY --from=build /app/tailscaled /app/tailscaled
 COPY --from=build /app/tailscale /app/tailscale
 COPY --from=build /app/motd /etc/motd
