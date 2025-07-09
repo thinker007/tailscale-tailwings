@@ -1,0 +1,6 @@
+# settings.
+PORT="41641"
+
+# Extra flags you might want to pass to tailscaled.
+FLAGS=""
+TS_DEBUG_ALWAYS_USE_DERP=true
