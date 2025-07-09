@@ -58,9 +58,9 @@ echo 'Starting headscale'
 /app/headscale serve &
 echo 'headscale started'
 
-echo 'Starting Caddy'
-caddy run --config /etc/caddy/Caddyfile &
-echo 'Caddy started'
+#echo 'Starting Caddy'
+#caddy run --config /etc/caddy/Caddyfile &
+#echo 'Caddy started'
 
 
 sleep infinity
