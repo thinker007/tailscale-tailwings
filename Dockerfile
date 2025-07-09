@@ -30,6 +30,7 @@ RUN mkdir -p \
       /var/run/tailscale \
       /var/cache/tailscale \
       /var/lib/tailscale \
+      /etc/headscale \
       /etc/squid/
 
 # Copy binary to production image
