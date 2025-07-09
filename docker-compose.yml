@@ -5,6 +5,9 @@ services:
       dockerfile: Dockerfile
     image: thinker007/tailwings:latest
     container_name: tailwings
+    ports:
+      - 127.0.0.1:8080:8080  # 只绑定本地
+      - 0.0.0.0:3478:3478/udp  # STUN 端口
     env_file:
       - .env
     cap_add:
