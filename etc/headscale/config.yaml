@@ -1,0 +1,115 @@
+server_url: https://example.com
+listen_addr: 0.0.0.0:8080
+metrics_listen_addr: 0.0.0.0:9090
+
+# 数据库配置
+database:
+  type: sqlite3
+  sqlite:
+    path: /var/lib/headscale/db.sqlite
+
+# 私钥路径
+private_key_path: /var/lib/headscale/private.key
+
+# Noise 协议私钥（新版本必需）
+noise:
+  private_key_path: /var/lib/headscale/noise_private.key
+
+# IP 分配配置
+prefixes:
+  v4: 100.64.0.0/10
+  v6: fd7a:115c:a1e0::/48
+  allocation: sequential
+
+# DNS 配置（新语法）
+dns:
+  override_local_dns: true
+  nameservers:
+    global:
+      - 1.1.1.1
+      - 8.8.8.8
+  search_domains: []
+  magic_dns: true
+  base_domain: example.com
+
+# 内置 DERP 服务器配置
+derp:
+  server:
+    # 启用内置 DERP 服务器
+    enabled: true
+
+    # DERP 区域配置
+    region_id: 999
+    region_code: "headscale"
+    region_name: "Headscale Embedded DERP"
+
+    # 客户端验证
+    verify_clients: true
+
+    # STUN 服务器地址
+    stun_listen_addr: "0.0.0.0:3478"
+
+    # DERP 服务器私钥路径
+    private_key_path: /var/lib/headscale/derp_server_private.key
+
+    # 自动添加到 DERP 地图
+    automatically_add_embedded_derp_region: true
+
+    # 指定您的公网 IP
+    ipv4: xxxx  # 替换为实际公网IP
+    # ipv6: YOUR_PUBLIC_IPv6  # 如果有 IPv6
+
+  # 外部 DERP 地图（作为备用）
+  urls:
+    - https://controlplane.tailscale.com/derpmap/default
+
+  # 本地 DERP 地图文件
+  paths: []
+
+  # 自动更新
+  auto_update_enabled: true
+  update_frequency: 24h
+
+# 日志配置
+log:
+  format: text
+  level: info
+
+# Unix socket 配置
+unix_socket: /var/run/headscale/headscale.sock
+unix_socket_permission: "0770"
+
+# 禁用更新检查
+disable_check_updates: true
+
+# 临时节点清理时间
+ephemeral_node_inactivity_timeout: 30m
+
+# 随机化客户端端口
+randomize_client_port: false
+
+# Logtail 配置（一般保持禁用）
+logtail:
+  enabled: false
+
+# OIDC 配置（如果不使用可以注释掉）
+# oidc:
+#   only_start_if_oidc_is_available: false
+#   issuer: ""
+#   client_id: ""
+#   client_secret: ""
+#   scope: ["openid", "profile", "email"]
+#   extra_params: {}
+#   allowed_domains: []
+#   allowed_groups: []
+#   strip_email_domain: true
+
+# CLI 配置
+cli:
+  insecure: false
+  timeout: 10s
+
+# 策略配置
+policy:
+  mode: file
+  path: ""
