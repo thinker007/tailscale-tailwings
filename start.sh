@@ -14,6 +14,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 # --tun=userspace-networking --socks5-server=localhost:3215
+export TS_DEBUG_ALWAYS_USE_DERP=true
 /app/tailscaled --verbose=1 --port 41641 &
 sleep 5
 if [ ! -S /var/run/tailscale/tailscaled.sock ]; then
