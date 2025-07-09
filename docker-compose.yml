@@ -12,4 +12,7 @@ services:
       - NET_RAW
     devices:
       - /dev/net/tun
+    volumes:
+      - /var/lib/tailscale/tailscaled.state:/var/lib/tailscale/tailscaled.state:ro
     restart: unless-stopped
+    
