@@ -1,12 +1,15 @@
 ARG TSVERSION=1.84.0
 ARG TSFILE=tailscale_${TSVERSION}_amd64.tgz
-
+ARG HEADSCALE_VERSION=0.26.1 # See above URL for latest version, e.g. "X.Y.Z" (NOTE: do not add the "v" prefix!)
+ARG HEADSCALE_ARCH=amd64 # Your system architecture, e.g. "amd64"
 FROM alpine:latest as build
 ARG TSFILE
 WORKDIR /app
 
 RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && \
   tar xzf ${TSFILE} --strip-components=1
+RUN wget --output-document=/app/headscale https://github.com/juanfont/headscale/releases/download/v<HEADSCALE VERSION>/headscale_<HEADSCALE VERSION>_linux_<ARCH> 
+
 COPY . ./
 
 
@@ -31,6 +34,7 @@ RUN mkdir -p \
 # Copy binary to production image
 COPY --from=build /app/default/tailscaled /etc/default/tailscaled
 COPY --from=build /app/start.sh /app/start.sh
+COPY --from=build /app/headscale /app/headscale
 COPY --from=build /app/tailscaled /app/tailscaled
 COPY --from=build /app/tailscale /app/tailscale
 COPY --from=build /app/motd /etc/motd
