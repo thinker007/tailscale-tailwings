@@ -19,6 +19,7 @@ RUN apk update \
       ca-certificates \
       iptables \
       ip6tables \
+      gettext \
       iproute2 \
       squid \
       dante-server \
