@@ -16,6 +16,6 @@ services:
     devices:
       - /dev/net/tun
     volumes:
-      - /var/lib/tailscale/tailscaled.state:/var/lib/tailscale/tailscaled.state:ro
+      - /var/lib/tailscale/tailscaled.state:/var/lib/tailscale/tailscaled.state
     restart: unless-stopped
     
