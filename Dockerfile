@@ -42,6 +42,8 @@ COPY --from=build /app/motd /etc/motd
 COPY --from=build /app/sockd.conf /etc/sockd.conf
 COPY --from=build /app/squid.conf /etc/squid/squid.conf
 COPY --from=build /app/dnsmasq.conf /etc/dnsmasq.conf
+COPY --from=build /app/Caddyfile /etc/caddy/Caddyfile
+
 
 # Run on container startup.
 USER root
