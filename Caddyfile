@@ -1,0 +1,47 @@
+# derper 服务器配置
+{
+    # 全局选项放在这里
+    email admin@example.com
+    # debug
+    # acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+{$DERP_DOMAIN} {
+    # 自动获取 SSL 证书
+    
+   encode gzip
+
+    tls {
+        protocols tls1.3
+    }
+
+    reverse_proxy localhost:8080 {
+        header_up Connection {http.request.header.Connection}
+        header_up Upgrade {http.request.header.Upgrade}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options nosniff
+        X-Frame-Options SAMEORIGIN
+        Referrer-Policy strict-origin-when-cross-origin
+        -Server
+        -X-Powered-By
+    }
+
+    log {
+        output file /var/log/caddy/headscale.log {
+            roll_size 100mb
+            roll_keep 10
+        }
+        format json
+    }
+}
+
+# HTTP 重定向到 HTTPS
+:80 {
+    redir https://{host}{uri} permanent
+}
+
