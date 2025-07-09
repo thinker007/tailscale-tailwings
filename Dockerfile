@@ -4,6 +4,8 @@ ARG HEADSCALE_VERSION=0.26.1 # See above URL for latest version, e.g. "X.Y.Z" (N
 ARG HEADSCALE_ARCH=amd64 # Your system architecture, e.g. "amd64"
 FROM alpine:latest as build
 ARG TSFILE
+ARG HEADSCALE_VERSION
+ARG HEADSCALE_ARCH
 WORKDIR /app
 
 RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && \
