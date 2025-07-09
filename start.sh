@@ -21,14 +21,17 @@ if [ ! -S /var/run/tailscale/tailscaled.sock ]; then
     exit 1
 fi
 
-until /app/tailscale up \
-    --authkey=${TAILSCALE_AUTH_KEY} \
-    --hostname=ntrance-${FLY_REGION} \
-    --advertise-exit-node \
-    --ssh
-do
-    sleep 0.1
-done
+if [ -n "${TAILSCALE_AUTH_KEY}" ]; then
+    /app/tailscale up \
+        --authkey=${TAILSCALE_AUTH_KEY} \
+        --hostname=entrance-${FLY_REGION} \
+        --advertise-exit-node \
+        --ssh
+else
+    /app/tailscale up \
+        --hostname=entrance-${FLY_REGION} \
+        --advertise-exit-node
+fi
 
 echo 'Tailscale started'
 
