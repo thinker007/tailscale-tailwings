@@ -8,7 +8,7 @@ WORKDIR /app
 
 RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && \
   tar xzf ${TSFILE} --strip-components=1
-RUN wget --output-document=/app/headscale https://github.com/juanfont/headscale/releases/download/v${HEADSCALE VERSION}/headscale_${HEADSCALE VERSION}_linux_${ARCH}
+RUN wget --output-document=/app/headscale https://github.com/juanfont/headscale/releases/download/v${HEADSCALE_VERSION}/headscale_${HEADSCALE_VERSION}_linux_${HEADSCALE_ARCH}
 
 COPY . ./
 
