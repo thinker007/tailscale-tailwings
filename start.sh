@@ -57,7 +57,7 @@ echo 'dnsmasq started'
 echo 'Starting headscale'
 # 使用环境变量替换模板
 envsubst < /etc/headscale/config.yml.template > /etc/headscale/config.yaml
-/app/headscale serve &
+/app/headscale serve -c /etc/headscale/config.yaml &
 echo 'headscale started'
 
 #echo 'Starting Caddy'
