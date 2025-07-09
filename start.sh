@@ -21,7 +21,7 @@ if [ ! -S /var/run/tailscale/tailscaled.sock ]; then
     echo "tailscaled.sock does not exist. exit!"
     exit 1
 fi
-
+/app/tailscale set --accept-dns=false
 if [ -n "${TAILSCALE_AUTH_KEY}" ]; then
     /app/tailscale up \
         --authkey=${TAILSCALE_AUTH_KEY} \
