@@ -1,4 +1,4 @@
-server_url: https://example.com
+server_url: https://${HEADSCALE_DOMAIN}
 listen_addr: 0.0.0.0:8080
 metrics_listen_addr: 0.0.0.0:9090
 
@@ -56,7 +56,7 @@ derp:
     automatically_add_embedded_derp_region: true
 
     # 指定您的公网 IP
-    ipv4: xxxx  # 替换为实际公网IP
+    ipv4: ${HEADSCALE_IP}  # 替换为实际公网IP
     # ipv6: YOUR_PUBLIC_IPv6  # 如果有 IPv6
 
   # 外部 DERP 地图（作为备用）
