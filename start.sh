@@ -27,10 +27,12 @@ if [ -n "${TAILSCALE_AUTH_KEY}" ]; then
         --authkey=${TAILSCALE_AUTH_KEY} \
         --hostname=entrance-${FLY_REGION} \
         --advertise-exit-node \
+        --accept-dns=false \
         --ssh
 else
     /app/tailscale up \
         --hostname=entrance-${FLY_REGION} \
+        --accept-dns=false \
         --advertise-exit-node
 fi
 
